@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "ebayCPaSS2GoogleSheets",
+  "version": "1.0.0",
+  "description": "ebayCPaSSサイトから配送情報を抽出し、Google Sheetsに保存するChrome拡張機能",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads",
+    "identity"
+  ],
+  "host_permissions": [
+    "*://*.ebaycpass.com/*",
+    "https://www.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.ebaycpass.com/*"],
+      "js": ["src/content/content.js"],
+      "css": ["src/content/content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "ebayCPaSS2GoogleSheets",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "options_page": "src/options/options.html",
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/images/*"],
+      "matches": ["*://*.ebaycpass.com/*"]
+    }
+  ],
+  "oauth2": {
+    "client_id": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
+  }
+} 
