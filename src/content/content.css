@@ -1,0 +1,529 @@
+/* ebayCPaSS2GoogleSheets Content Script Styles */
+
+/* ボタンコンテナ */
+.ebay-cpass-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+
+.ebay-cpass-button-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ボタンの基本スタイル */
+.ebay-cpass-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 36px;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.ebay-cpass-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.ebay-cpass-btn:active {
+  transform: translateY(0);
+}
+
+.ebay-cpass-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 抽出ボタン */
+.ebay-cpass-extract-btn {
+  background: #059669;
+}
+
+.ebay-cpass-extract-btn:hover {
+  background: #047857;
+}
+
+/* コピーボタン */
+.ebay-cpass-copy-btn {
+  background: #7c3aed;
+}
+
+.ebay-cpass-copy-btn:hover {
+  background: #6d28d9;
+}
+
+/* 抽出＆コピーボタン */
+.ebay-cpass-extract-copy-btn {
+  background: #dc2626;
+  font-size: 12px;
+}
+
+.ebay-cpass-extract-copy-btn:hover {
+  background: #b91c1c;
+}
+
+/* 通知システム */
+.ebay-cpass-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 400px;
+  min-width: 300px;
+  animation: slideInDown 0.3s ease;
+}
+
+.ebay-cpass-notification.success {
+  border-left: 4px solid #10b981;
+}
+
+.ebay-cpass-notification.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.ebay-cpass-notification.error {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+}
+
+.ebay-cpass-notification.info {
+  border-left: 4px solid #3b82f6;
+}
+
+/* API エラー専用通知 */
+.ebay-cpass-notification.api-error {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+  border: 1px solid #fbbf24;
+}
+
+.ebay-cpass-notification.api-error .notification-message {
+  color: #92400e;
+  font-weight: 500;
+}
+
+.ebay-cpass-notification.api-error .notification-message::before {
+  content: "⚠️ ";
+  margin-right: 4px;
+}
+
+/* 成功通知の背景色 */
+.ebay-cpass-notification.success {
+  border-left: 4px solid #10b981;
+  background: #f0fdf4;
+}
+
+.ebay-cpass-notification.success .notification-message {
+  color: #065f46;
+}
+
+/* 警告通知の背景色 */
+.ebay-cpass-notification.warning {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+
+.ebay-cpass-notification.warning .notification-message {
+  color: #92400e;
+}
+
+.ebay-cpass-notification.fade-out {
+  animation: slideOutUp 0.3s ease;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.notification-message {
+  font-size: 14px;
+  color: #374151;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* アニメーション */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes slideOutUp {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+/* 個別商品ボタンのスタイル */
+.ebay-cpass-item-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.ebay-cpass-item-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ebay-cpass-item-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.ebay-cpass-item-btn:active {
+  transform: translateY(0);
+}
+
+.ebay-cpass-item-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-extract-btn {
+  background: #059669;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-extract-btn:hover {
+  background: #047857;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-copy-btn {
+  background: #7c3aed;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-copy-btn:hover {
+  background: #6d28d9;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-extract-copy-btn {
+  background: #dc2626;
+  min-width: 40px;
+}
+
+.ebay-cpass-item-btn.ebay-cpass-extract-copy-btn:hover {
+  background: #b91c1c;
+}
+
+/* 商品行のボタンコンテナ調整 */
+td .ebay-cpass-item-buttons {
+  flex-shrink: 0;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .ebay-cpass-button-container {
+    min-width: 140px;
+    padding: 10px;
+  }
+  
+  .ebay-cpass-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+  
+  .ebay-cpass-extract-copy-btn {
+    font-size: 11px;
+  }
+  
+  .ebay-cpass-notification {
+    max-width: 90%;
+    min-width: 250px;
+  }
+
+  .ebay-cpass-item-buttons {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .ebay-cpass-item-btn {
+    font-size: 10px;
+    padding: 2px 4px;
+    min-width: 24px;
+    height: 24px;
+  }
+}
+
+/* 高コントラスト対応 */
+@media (prefers-contrast: high) {
+  .ebay-cpass-button-container {
+    background: white;
+    border: 2px solid #000;
+  }
+  
+  .ebay-cpass-btn {
+    border: 1px solid #000;
+  }
+  
+  .ebay-cpass-notification {
+    border: 2px solid #000;
+  }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+  .ebay-cpass-button-container {
+    background: rgba(31, 41, 55, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  .ebay-cpass-notification {
+    background: #1f2937;
+    border: 1px solid #374151;
+  }
+  
+  .notification-message {
+    color: #f9fafb;
+  }
+  
+  .notification-close {
+    color: #9ca3af;
+  }
+  
+  .notification-close:hover {
+    background: #374151;
+    color: #d1d5db;
+  }
+}
+
+/* 印刷時は非表示 */
+@media print {
+  .ebay-cpass-button-container,
+  .ebay-cpass-notification {
+    display: none !important;
+  }
+} 
+
+/* 個別商品ボタンの改良版スタイル */
+.ebay-cpass-extract-copy-btn {
+  background: #dc2626;
+  color: white;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-left: 8px;
+  vertical-align: middle;
+  position: relative;
+  z-index: 1000;
+}
+
+.ebay-cpass-extract-copy-btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
+
+.ebay-cpass-extract-copy-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(220, 38, 38, 0.25);
+}
+
+.ebay-cpass-extract-copy-btn:disabled {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Ant Design ボタンとの互換性 */
+.ant-btn.ebay-cpass-extract-copy-btn {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-left: 8px;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ant-btn.ebay-cpass-extract-copy-btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
+
+.ant-btn.ebay-cpass-extract-copy-btn:focus {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: white;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.ant-btn.ebay-cpass-extract-copy-btn:active {
+  background: #991b1b;
+  border-color: #991b1b;
+  color: white;
+  transform: translateY(0);
+}
+
+.ant-btn.ebay-cpass-extract-copy-btn:disabled {
+  background: #f5f5f5;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* テーブル内のボタン配置 */
+.pkg_wrapper .ebay-cpass-extract-copy-btn,
+.title_action .ebay-cpass-extract-copy-btn,
+tr .ebay-cpass-extract-copy-btn {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* 処理中の状態表示 */
+.ebay-cpass-extract-copy-btn[disabled] {
+  position: relative;
+  overflow: hidden;
+}
+
+.ebay-cpass-extract-copy-btn[disabled]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* デバッグ用の境界線（開発時のみ） */
+.ebay-cpass-debug .ebay-cpass-extract-copy-btn {
+  border: 2px dashed #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* 高コントラストモード対応 */
+@media (prefers-contrast: high) {
+  .ebay-cpass-extract-copy-btn {
+    border: 2px solid #dc2626;
+    background: #dc2626;
+  }
+  
+  .ebay-cpass-extract-copy-btn:hover {
+    border: 2px solid #b91c1c;
+    background: #b91c1c;
+  }
+} 

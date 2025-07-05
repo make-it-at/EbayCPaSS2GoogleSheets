@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ebayCPaSS2GoogleSheets</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="header-content">
+                <img src="../../assets/icons/icon32.png" alt="ebayCPaSS2GoogleSheets" class="logo">
+                <h1 class="title">ebayCPaSS2GoogleSheets</h1>
+                <span class="version">v1.0.0</span>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- ステータス表示 -->
+            <div class="status-section">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot warning"></span>
+                    <span class="status-text" id="statusText">読み込み中...</span>
+                </div>
+            </div>
+
+            <!-- アクションボタン -->
+            <div class="action-section">
+                <button id="extractBtn" class="btn btn-primary" disabled>
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    データを抽出
+                </button>
+                
+                <button id="saveBtn" class="btn btn-secondary" disabled>
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    Sheetsに保存
+                </button>
+                
+                <button id="copyBtn" class="btn btn-success" disabled>
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    クリップボードにコピー
+                </button>
+                
+                <button id="bulkCopyBtn" class="btn btn-outline">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/>
+                        <path d="M13 21h6a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2z"/>
+                    </svg>
+                    全件コピー
+                </button>
+            </div>
+
+            <!-- 抽出データ表示 -->
+            <div class="data-section" id="dataSection" style="display: none;">
+                <h3 class="section-title">抽出データ</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <label class="data-label">推定送料</label>
+                        <span class="data-value" id="shippingCost">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label class="data-label">追跡番号</label>
+                        <span class="data-value" id="trackingNumber">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label class="data-label">ラストマイル追跡番号</label>
+                        <span class="data-value" id="lastMileNumber">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label class="data-label">抽出日時</label>
+                        <span class="data-value" id="extractedAt">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 設定セクション -->
+            <div class="settings-section" id="settingsSection" style="display: none;">
+                <div class="section-header">
+                    <h3 class="section-title">設定</h3>
+                    <button id="closeSettingsBtn" class="btn-text">閉じる</button>
+                </div>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <h4 class="setting-group-title">抽出設定</h4>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="autoExtractEnabled" class="setting-checkbox">
+                                <span class="setting-text">ページ読み込み時に自動抽出</span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="notificationEnabled" class="setting-checkbox">
+                                <span class="setting-text">抽出完了時に通知</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h4 class="setting-group-title">データ管理</h4>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <span class="setting-text">履歴保持期間</span>
+                                <select id="historyRetentionDays" class="setting-select">
+                                    <option value="7">7日</option>
+                                    <option value="30">30日</option>
+                                    <option value="90">90日</option>
+                                    <option value="365">1年</option>
+                                    <option value="0">無期限</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="autoSaveEnabled" class="setting-checkbox">
+                                <span class="setting-text">抽出後に自動保存</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h4 class="setting-group-title">UI設定</h4>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="showButtonsOnSite" class="setting-checkbox">
+                                <span class="setting-text">サイト上にボタンを表示</span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <span class="setting-text">ボタン表示位置</span>
+                                <select id="buttonPosition" class="setting-select">
+                                    <option value="top-right">右上</option>
+                                    <option value="top-left">左上</option>
+                                    <option value="bottom-right">右下</option>
+                                    <option value="bottom-left">左下</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button id="resetSettingsBtn" class="btn btn-outline">
+                            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                                <path d="M21 3v5h-5"/>
+                                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                                <path d="M3 21v-5h5"/>
+                            </svg>
+                            設定をリセット
+                        </button>
+                        <button id="saveSettingsBtn" class="btn btn-primary">
+                            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                <polyline points="17,21 17,13 7,13 7,21"/>
+                                <polyline points="7,3 7,8 15,8"/>
+                            </svg>
+                            設定を保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 履歴セクション -->
+            <div class="history-section" id="historySection">
+                <div class="section-header">
+                    <h3 class="section-title">抽出履歴</h3>
+                    <button id="clearHistoryBtn" class="btn-text">クリア</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                        <p>まだ抽出データがありません</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-links">
+                <button id="settingsBtn" class="btn-text">設定</button>
+                <button id="helpBtn" class="btn-text">ヘルプ</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ローディングオーバーレイ -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">処理中...</p>
+    </div>
+
+    <!-- 通知 -->
+    <div class="notification" id="notification" style="display: none;">
+        <div class="notification-content">
+            <span class="notification-message" id="notificationMessage"></span>
+            <button class="notification-close" id="notificationClose">×</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 

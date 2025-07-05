@@ -7,18 +7,28 @@
     "activeTab",
     "storage",
     "downloads",
-    "identity"
+    "identity",
+    "notifications",
+    "scripting"
   ],
   "host_permissions": [
     "*://*.ebaycpass.com/*",
-    "https://www.googleapis.com/*"
+    "*://cpass.ebay.com/*",
+    "*://*.ebay.com/*",
+    "https://www.googleapis.com/*",
+    "https://oauth2.googleapis.com/*",
+    "https://accounts.google.com/*"
   ],
   "background": {
     "service_worker": "src/background/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["*://*.ebaycpass.com/*"],
+      "matches": [
+        "*://*.ebaycpass.com/*",
+        "*://cpass.ebay.com/*",
+        "*://*.ebay.com/*"
+      ],
       "js": ["src/content/content.js"],
       "css": ["src/content/content.css"],
       "run_at": "document_end"
@@ -44,13 +54,11 @@
   "web_accessible_resources": [
     {
       "resources": ["assets/images/*"],
-      "matches": ["*://*.ebaycpass.com/*"]
+      "matches": [
+        "*://*.ebaycpass.com/*",
+        "*://cpass.ebay.com/*",
+        "*://*.ebay.com/*"
+      ]
     }
-  ],
-  "oauth2": {
-    "client_id": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/spreadsheets"
-    ]
-  }
+  ]
 } 

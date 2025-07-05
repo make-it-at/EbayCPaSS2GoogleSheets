@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ebayCPaSS2GoogleSheets - 設定</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <img src="../../assets/icons/icon32.png" alt="ebayCPaSS2GoogleSheets" class="logo">
+                <h1 class="title">ebayCPaSS2GoogleSheets - 設定</h1>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="settings-section">
+                <h2 class="section-title">抽出設定</h2>
+                <div class="setting-group">
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="autoExtract" class="setting-checkbox">
+                            <span class="setting-text">ページ読み込み時に自動抽出</span>
+                        </label>
+                        <p class="setting-description">ebayCPaSSサイトを開いた際に自動でデータを抽出します</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="saveToSheets" class="setting-checkbox">
+                            <span class="setting-text">Google Sheetsに自動保存</span>
+                        </label>
+                        <p class="setting-description">データ抽出後、自動でGoogle Sheetsに保存します</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="showNotifications" class="setting-checkbox">
+                            <span class="setting-text">通知を表示</span>
+                        </label>
+                        <p class="setting-description">データ抽出や保存時に通知を表示します</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="showButtonsOnSite" class="setting-checkbox">
+                            <span class="setting-text">サイト上にボタンを表示</span>
+                        </label>
+                        <p class="setting-description">ebayCPaSSサイト上にデータ抽出ボタンを表示します</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">ボタンの表示方法</span>
+                        </label>
+                        <select id="buttonMode" class="setting-select">
+                            <option value="individual">各商品に個別ボタン</option>
+                            <option value="global">画面全体に1つのボタン</option>
+                        </select>
+                        <p class="setting-description">ボタンの表示方法を選択します</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">ボタンの位置</span>
+                        </label>
+                        <select id="buttonPosition" class="setting-select">
+                            <option value="top-right">右上</option>
+                            <option value="top-left">左上</option>
+                            <option value="bottom-right">右下</option>
+                            <option value="bottom-left">左下</option>
+                        </select>
+                        <p class="setting-description">全体ボタンの表示位置を選択します（個別ボタンの場合は適用されません）</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">履歴保持期間</span>
+                        </label>
+                        <select id="historyRetentionDays" class="setting-select">
+                            <option value="7">7日</option>
+                            <option value="30">30日</option>
+                            <option value="90">90日</option>
+                            <option value="365">1年</option>
+                            <option value="0">無制限</option>
+                        </select>
+                        <p class="setting-description">抽出データの履歴を保持する期間を設定します</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Google Sheets設定</h2>
+                <div class="setting-group">
+                    <!-- OAuth認証設定 -->
+                    <div class="setting-item">
+                        <div class="oauth-status" id="oauthStatus">
+                            <div class="oauth-indicator">
+                                <div class="oauth-icon" id="oauthIcon">⚠️</div>
+                                <div class="oauth-text">
+                                    <span class="oauth-title" id="oauthTitle">Google認証が必要です</span>
+                                    <span class="oauth-description" id="oauthDescription">Google Sheetsにアクセスするには認証が必要です</span>
+                                </div>
+                            </div>
+                            <button id="oauthButton" class="btn btn-primary">簡単セットアップを開始</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 簡単セットアップガイド -->
+                    <div class="setting-item">
+                        <div class="setup-guide" id="setupGuide">
+                            <h4>🚀 3分で完了！簡単セットアップ</h4>
+                            <div class="setup-steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Google Cloud Consoleを開く</div>
+                                        <div class="step-description">
+                                            <a href="https://console.cloud.google.com/" target="_blank" class="btn btn-link">
+                                                📱 Google Cloud Console を開く
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <div class="step-title">プロジェクトを作成</div>
+                                        <div class="step-description">
+                                            新しいプロジェクトを作成（例：「ebaycpass-sheets」）
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <div class="step-title">APIを有効化</div>
+                                        <div class="step-description">
+                                            「APIとサービス」→「ライブラリ」で以下を有効化：<br>
+                                            • Google Sheets API<br>
+                                            • Google Drive API
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <div class="step-title">OAuth認証情報を作成</div>
+                                        <div class="step-description">
+                                            「認証情報」→「OAuth 2.0 クライアントID」を作成<br>
+                                            <strong>リダイレクトURI:</strong> <code>https://<span id="extensionId">EXTENSION_ID</span>.chromiumapp.org/</code>
+                                            <button id="copyRedirectUri" class="btn btn-mini">📋 コピー</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Client IDをコピー</div>
+                                        <div class="step-description">
+                                            作成されたClient IDを下記に貼り付け
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Client ID設定 -->
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">Google Client ID</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="clientId" class="setting-input" placeholder="YOUR_CLIENT_ID.apps.googleusercontent.com">
+                            <button id="validateClientId" class="btn btn-mini">✓ 検証</button>
+                        </div>
+                        <p class="setting-description">Google Cloud ConsoleからOAuth 2.0クライアントIDを取得して入力してください</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">スプレッドシートID</span>
+                        </label>
+                        <input type="text" id="spreadsheetId" class="setting-input" placeholder="自動生成されます">
+                        <p class="setting-description">使用するGoogle SheetsのID（通常は自動生成されます）</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">シート名</span>
+                        </label>
+                        <input type="text" id="sheetName" class="setting-input" placeholder="ebayCPaSS抽出データ">
+                        <p class="setting-description">データを保存するシートの名前</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <button id="createNewSheet" class="btn btn-secondary" disabled>新しいスプレッドシートを作成</button>
+                        <p class="setting-description">新しいGoogle Sheetsスプレッドシートを作成します（認証後に利用可能）</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <button id="openSheet" class="btn btn-secondary" disabled>スプレッドシートを開く</button>
+                        <p class="setting-description">設定されたGoogle Sheetsを新しいタブで開きます</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <button id="testConnection" class="btn btn-secondary" disabled>接続テスト</button>
+                        <p class="setting-description">Google Sheets APIの接続をテストします</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">データ抽出設定</h2>
+                <div class="setting-group">
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">推定送料のセレクター</span>
+                        </label>
+                        <input type="text" id="shippingCostSelector" class="setting-input" placeholder="div span.value">
+                        <p class="setting-description">推定送料を抽出するためのCSSセレクター</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">追跡番号のセレクター</span>
+                        </label>
+                        <input type="text" id="trackingNumberSelector" class="setting-input" placeholder="a span">
+                        <p class="setting-description">追跡番号を抽出するためのCSSセレクター</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <span class="setting-text">ラストマイル追跡番号のセレクター</span>
+                        </label>
+                        <input type="text" id="lastMileSelector" class="setting-input" placeholder="span.bold">
+                        <p class="setting-description">ラストマイル追跡番号を抽出するためのCSSセレクター</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <button id="resetSelectors" class="btn btn-text">デフォルトに戻す</button>
+                        <p class="setting-description">セレクターをデフォルト値に戻します</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">データ管理</h2>
+                <div class="setting-group">
+                    <div class="setting-item">
+                        <button id="exportData" class="btn btn-secondary">データをエクスポート</button>
+                        <p class="setting-description">保存されたデータをJSONファイルとしてエクスポートします</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <button id="clearAllData" class="btn btn-danger">すべてのデータを削除</button>
+                        <p class="setting-description">保存されたすべてのデータを削除します（元に戻せません）</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <button id="saveSettings" class="btn btn-primary">設定を保存</button>
+                <div class="footer-links">
+                    <a href="https://github.com/make-it-at/EbayCPaSS2GoogleSheets" target="_blank" class="footer-link">GitHub</a>
+                    <a href="https://github.com/make-it-at/EbayCPaSS2GoogleSheets/issues" target="_blank" class="footer-link">サポート</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 通知 -->
+    <div class="notification" id="notification" style="display: none;">
+        <div class="notification-content">
+            <span class="notification-message" id="notificationMessage"></span>
+            <button class="notification-close" id="notificationClose">×</button>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html> 
